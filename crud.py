@@ -7,12 +7,12 @@ from lnbits.helpers import urlsafe_short_hash
 from .models import (
     CreateMethod,
     CreateRegions,
-    ExtensionSettings,  #  
+    ExtensionSettings,  #
     Method,
     MethodFilters,
     Regions,
     RegionsFilters,
-    UserExtensionSettings,  #  
+    UserExtensionSettings,  #
 )
 
 db = Database("ext_shipping")

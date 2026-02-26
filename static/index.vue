@@ -1,13 +1,8 @@
 <template id="page-shipping">
   <div class="row q-col-gutter-md">
     <div class="col-12 col-md-8 col-lg-7 q-gutter-y-md">
-    
-      <q-card
-        id="settingsCard"
-      >
-        <q-card-section
-          class=""
-        >
+      <q-card id="settingsCard">
+        <q-card-section class="">
           <div class="row">
             <div class="col">
               <span class="text-h5">Shipping</span>
@@ -25,18 +20,12 @@
           </div>
         </q-card-section>
       </q-card>
-    
 
       <div class="q-mt-lg">
         <span class="text-h5">Regions</span>
       </div>
-      <q-card
-        id="regionsCard"
-        class="q-mt-xs"
-      >
-        <q-card-section
-          class=""
-        >
+      <q-card id="regionsCard" class="q-mt-xs">
+        <q-card-section class="">
           <div class="row items-center no-wrap q-mb-md">
             <div class="col">
               <q-input
@@ -60,7 +49,6 @@
               </q-input>
             </div>
             <div class="col-auto">
-              
               <q-btn
                 @click="showNewRegionsForm()"
                 unelevated
@@ -69,7 +57,7 @@
               >
                 New Regions
               </q-btn>
-              
+
               <q-btn
                 flat
                 color="grey"
@@ -101,7 +89,6 @@
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td auto-width>
-                   
                   <q-btn
                     flat
                     dense
@@ -113,7 +100,7 @@
                   >
                     <q-tooltip> Edit </q-tooltip>
                   </q-btn>
-                  
+
                   <q-btn
                     flat
                     dense
@@ -131,7 +118,11 @@
                   <div v-if="col.field == 'updated_at'">
                     <span v-text="dateFromNow(col.value)"> </span>
                   </div>
-                  <div v-else-if="Array.isArray(col.value) && col.field == 'regions'">
+                  <div
+                    v-else-if="
+                      Array.isArray(col.value) && col.field == 'regions'
+                    "
+                  >
                     ${ methodRegionsLabel(col.value) }
                   </div>
                   <div v-else-if="Array.isArray(col.value)">
@@ -148,13 +139,8 @@
       <div class="q-mt-lg">
         <span class="text-h5">Methods</span>
       </div>
-      <q-card
-        id="methodsCard"
-        class="q-mt-xs"
-      >
-        <q-card-section
-          class=""
-        >
+      <q-card id="methodsCard" class="q-mt-xs">
+        <q-card-section class="">
           <div class="row items-center no-wrap q-mb-md">
             <div class="col">
               <q-input
@@ -219,7 +205,6 @@
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td auto-width>
-                  
                   <q-btn
                     flat
                     dense
@@ -231,7 +216,7 @@
                   >
                     <q-tooltip> Edit </q-tooltip>
                   </q-btn>
-                  
+
                   <q-btn
                     flat
                     dense
@@ -260,7 +245,7 @@
         </q-card-section>
       </q-card>
     </div>
-    
+
     <div class="col-12 col-md-4 col-lg-5 q-gutter-y-md">
       <q-card>
         <q-card-section>
@@ -292,7 +277,6 @@
         </q-card-section>
       </q-card>
     </div>
-    
 
     <!--/////////////////////////////////////////////////-->
     <!--//////////////FORM DIALOG////////////////////////-->
@@ -304,27 +288,27 @@
         class="q-pa-lg q-pt-xl lnbits__dialog-card q-col-gutter-md"
       >
         <span class="text-h5">Settings</span>
-       
-<q-select
-  filled
-  dense
-  v-model="settingsFormDialog.data.currency"
-  label="currency"
-  hint=" "
-  :options="currencyOptions"
-></q-select>
 
-<q-select
-  filled
-  dense
-  multiple
-  use-chips
-  v-model="settingsFormDialog.data.available_regions"
-  label="Available Regions"
-  hint="Select available regions"
-  :options="defaultRegions"
-></q-select>
-  
+        <q-select
+          filled
+          dense
+          v-model="settingsFormDialog.data.currency"
+          label="currency"
+          hint=" "
+          :options="currencyOptions"
+        ></q-select>
+
+        <q-select
+          filled
+          dense
+          multiple
+          use-chips
+          v-model="settingsFormDialog.data.available_regions"
+          label="Available Regions"
+          hint="Select available regions"
+          :options="defaultRegions"
+        ></q-select>
+
         <div class="row q-mt-lg">
           <q-btn
             @click="updateSettings"
@@ -347,53 +331,57 @@
       >
         <span class="text-h5">Regions</span>
 
-       
-<q-input
-  filled
-  dense
-  v-model.trim="regionsFormDialog.data.name"
-  label="Name"
-  hint=" "
-></q-input>
-  
-<q-select
-  filled
-  dense
-  multiple
-  use-chips
-  v-model="regionsFormDialog.data.regions"
-  label="Regions"
-  hint="Select regions "
-  :options="settingsFormDialog.data.available_regions && settingsFormDialog.data.available_regions.length ? settingsFormDialog.data.available_regions : defaultRegions"
-></q-select>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="regionsFormDialog.data.price"
-  label="Price"
-  hint="Standard price "
-  type="number"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="regionsFormDialog.data.weight_threshold"
-  label="Weight threshold in grams"
-  hint="Any order below this threshold will use the standard price  (optional)"
-  type="number"
-></q-input>
-  
-<q-input
-  filled
-  dense
-  v-model.trim="regionsFormDialog.data.price_per_g"
-  label="Price per gram"
-  hint="Any orders above the standard weight threshold will add calculate additional costs  (optional)"
-  type="number"
-></q-input>
- 
+        <q-input
+          filled
+          dense
+          v-model.trim="regionsFormDialog.data.name"
+          label="Name"
+          hint=" "
+        ></q-input>
+
+        <q-select
+          filled
+          dense
+          multiple
+          use-chips
+          v-model="regionsFormDialog.data.regions"
+          label="Regions"
+          hint="Select regions "
+          :options="
+            settingsFormDialog.data.available_regions &&
+            settingsFormDialog.data.available_regions.length
+              ? settingsFormDialog.data.available_regions
+              : defaultRegions
+          "
+        ></q-select>
+
+        <q-input
+          filled
+          dense
+          v-model.trim="regionsFormDialog.data.price"
+          label="Price"
+          hint="Standard price "
+          type="number"
+        ></q-input>
+
+        <q-input
+          filled
+          dense
+          v-model.trim="regionsFormDialog.data.weight_threshold"
+          label="Weight threshold in grams"
+          hint="Any order below this threshold will use the standard price  (optional)"
+          type="number"
+        ></q-input>
+
+        <q-input
+          filled
+          dense
+          v-model.trim="regionsFormDialog.data.price_per_g"
+          label="Price per gram"
+          hint="Any orders above the standard weight threshold will add calculate additional costs  (optional)"
+          type="number"
+        ></q-input>
+
         <div class="row q-mt-lg">
           <q-btn @click="saveRegions" unelevated color="primary">
             <span v-if="regionsFormDialog.data.id">Update</span>
@@ -413,35 +401,39 @@
       >
         <span class="text-h5">Method</span>
 
-       
-<q-input
-  filled
-  dense
-  v-model.trim="methodsFormDialog.data.title"
-  label="Title"
-  hint="Example: standard, next-day"
-></q-input>
+        <q-input
+          filled
+          dense
+          v-model.trim="methodsFormDialog.data.title"
+          label="Title"
+          hint="Example: standard, next-day"
+        ></q-input>
 
-<q-input
-  filled
-  dense
-  v-model.number="methodsFormDialog.data.cost_percentage"
-  label="Cost percentage"
-  hint="Percentage to add to the final cost"
-  type="number"
-></q-input>
+        <q-input
+          filled
+          dense
+          v-model.number="methodsFormDialog.data.cost_percentage"
+          label="Cost percentage"
+          hint="Percentage to add to the final cost"
+          type="number"
+        ></q-input>
 
-<q-select
-  filled
-  dense
-  multiple
-  use-chips
-  v-model="methodsFormDialog.data.regions"
-  label="Regions"
-  hint="Select regions"
-  :options="settingsFormDialog.data.available_regions && settingsFormDialog.data.available_regions.length ? settingsFormDialog.data.available_regions : defaultRegions"
-></q-select>
- 
+        <q-select
+          filled
+          dense
+          multiple
+          use-chips
+          v-model="methodsFormDialog.data.regions"
+          label="Regions"
+          hint="Select regions"
+          :options="
+            settingsFormDialog.data.available_regions &&
+            settingsFormDialog.data.available_regions.length
+              ? settingsFormDialog.data.available_regions
+              : defaultRegions
+          "
+        ></q-select>
+
         <div class="row q-mt-lg">
           <q-btn @click="saveMethod" unelevated color="primary">
             <span v-if="methodsFormDialog.data.id">Update</span>

@@ -22,11 +22,11 @@ async def test_create_and_get_regions():
     user_id = uuid4().hex
 
     data = CreateRegions(
-        name = "name_27Pt9bgojxiTHFcXoXb4dR",
-        regions = ["Europe", "Asia"],
-        price = 100,
-        weight_threshold = 82,
-        price_per_g = 88.45226127098425,
+        name="name_27Pt9bgojxiTHFcXoXb4dR",
+        regions=["Europe", "Asia"],
+        price=100,
+        weight_threshold=82,
+        price_per_g=88.45226127098425,
     )
     regions_one = await create_regions(user_id, data)
     assert regions_one.id is not None
@@ -42,11 +42,11 @@ async def test_create_and_get_regions():
     assert regions_one.price_per_g == data.price_per_g
 
     data = CreateRegions(
-        name = "name_27Pt9bgojxiTHFcXoXb4dR",
-        regions = ["Europe", "Asia"],
-        price = 100,
-        weight_threshold = 82,
-        price_per_g = 88.45226127098425,
+        name="name_27Pt9bgojxiTHFcXoXb4dR",
+        regions=["Europe", "Asia"],
+        price=100,
+        weight_threshold=82,
+        price_per_g=88.45226127098425,
     )
     regions_two = await create_regions(user_id, data)
     assert regions_two.id is not None
@@ -73,11 +73,11 @@ async def test_update_regions():
     user_id = uuid4().hex
 
     data = CreateRegions(
-        name = "name_27Pt9bgojxiTHFcXoXb4dR",
-        regions = ["Europe", "Asia"],
-        price = 100,
-        weight_threshold = 82,
-        price_per_g = 88.45226127098425,
+        name="name_27Pt9bgojxiTHFcXoXb4dR",
+        regions=["Europe", "Asia"],
+        price=100,
+        weight_threshold=82,
+        price_per_g=88.45226127098425,
     )
     regions_one = await create_regions(user_id, data)
     assert regions_one.id is not None
@@ -93,11 +93,11 @@ async def test_update_regions():
     assert regions_one.price_per_g == data.price_per_g
 
     data_updated = CreateRegions(
-        name = "name_27Pt9bgojxiTHFcXoXb4dR",
-        regions = ["Europe", "Asia"],
-        price = 100,
-        weight_threshold = 82,
-        price_per_g = 88.45226127098425,
+        name="name_27Pt9bgojxiTHFcXoXb4dR",
+        regions=["Europe", "Asia"],
+        price=100,
+        weight_threshold=82,
+        price_per_g=88.45226127098425,
     )
     regions_updated = Regions(**{**regions_one.dict(), **data_updated.dict()})
 

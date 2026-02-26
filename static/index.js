@@ -31,8 +31,7 @@ window.PageShipping = {
           regions: [],
           price: null,
           weight_threshold: null,
-          price_per_g: null,
-          
+          price_per_g: null
         }
       },
       regionsList: [],
@@ -40,14 +39,49 @@ window.PageShipping = {
         search: '',
         loading: false,
         columns: [
-          {"name": "name", "align": "left", "label": "Name", "field": "name", "sortable": true},
-          {"name": "regions", "align": "left", "label": "Regions", "field": "regions", "sortable": true},
-          {"name": "price", "align": "left", "label": "Price", "field": "price", "sortable": true},
-          {"name": "weight_threshold", "align": "left", "label": "Weight threshold in grams", "field": "weight_threshold", "sortable": true},
-          {"name": "price_per_g", "align": "left", "label": "Price per gram", "field": "price_per_g", "sortable": true},
-          {"name": "updated_at", "align": "left", "label": "Updated At", "field": "updated_at", "sortable": true},
-          {"name": "id", "align": "left", "label": "ID", "field": "id", "sortable": true},
-          
+          {
+            name: 'name',
+            align: 'left',
+            label: 'Name',
+            field: 'name',
+            sortable: true
+          },
+          {
+            name: 'regions',
+            align: 'left',
+            label: 'Regions',
+            field: 'regions',
+            sortable: true
+          },
+          {
+            name: 'price',
+            align: 'left',
+            label: 'Price',
+            field: 'price',
+            sortable: true
+          },
+          {
+            name: 'weight_threshold',
+            align: 'left',
+            label: 'Weight threshold in grams',
+            field: 'weight_threshold',
+            sortable: true
+          },
+          {
+            name: 'price_per_g',
+            align: 'left',
+            label: 'Price per gram',
+            field: 'price_per_g',
+            sortable: true
+          },
+          {
+            name: 'updated_at',
+            align: 'left',
+            label: 'Updated At',
+            field: 'updated_at',
+            sortable: true
+          },
+          {name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true}
         ],
         pagination: {
           sortBy: 'updated_at',
@@ -71,12 +105,35 @@ window.PageShipping = {
         search: '',
         loading: false,
         columns: [
-          {"name": "title", "align": "left", "label": "Title", "field": "title", "sortable": true},
-          {"name": "cost_percentage", "align": "left", "label": "Cost %", "field": "cost_percentage", "sortable": true},
-          {"name": "regions", "align": "left", "label": "Regions", "field": "regions", "sortable": true},
-          {"name": "updated_at", "align": "left", "label": "Updated At", "field": "updated_at", "sortable": true},
-          {"name": "id", "align": "left", "label": "ID", "field": "id", "sortable": true},
-          
+          {
+            name: 'title',
+            align: 'left',
+            label: 'Title',
+            field: 'title',
+            sortable: true
+          },
+          {
+            name: 'cost_percentage',
+            align: 'left',
+            label: 'Cost %',
+            field: 'cost_percentage',
+            sortable: true
+          },
+          {
+            name: 'regions',
+            align: 'left',
+            label: 'Regions',
+            field: 'regions',
+            sortable: true
+          },
+          {
+            name: 'updated_at',
+            align: 'left',
+            label: 'Updated At',
+            field: 'updated_at',
+            sortable: true
+          },
+          {name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true}
         ],
         pagination: {
           sortBy: 'updated_at',
@@ -112,23 +169,16 @@ window.PageShipping = {
   methods: {
     //////////////// Settings ////////////////////////
     async updateSettings() {
-      
       try {
         const data = {...this.settingsFormDialog.data}
 
-        await LNbits.api.request(
-          'PUT',
-          '/shipping/api/v1/settings',
-          null,
-          data
-        )
+        await LNbits.api.request('PUT', '/shipping/api/v1/settings', null, data)
         this.settingsFormDialog.show = false
       } catch (error) {
         LNbits.utils.notifyApiError(error)
       }
     },
     async getSettings() {
-      
       try {
         const {data} = await LNbits.api.request(
           'GET',
@@ -155,12 +205,11 @@ window.PageShipping = {
     //////////////// Regions ////////////////////////
     async showNewRegionsForm() {
       this.regionsFormDialog.data = {
-          name: null,
-          regions: [],
-          price: null,
-          weight_threshold: null,
-          price_per_g: null,
-          
+        name: null,
+        regions: [],
+        price: null,
+        weight_threshold: null,
+        price_per_g: null
       }
       this.regionsFormDialog.show = true
     },
@@ -169,7 +218,6 @@ window.PageShipping = {
       this.regionsFormDialog.show = true
     },
     async saveRegions() {
-      
       try {
         const data = {extra: {}, ...this.regionsFormDialog.data}
         const method = data.id ? 'PUT' : 'POST'
@@ -188,13 +236,9 @@ window.PageShipping = {
     },
 
     async getRegions(props) {
-      
       try {
         this.regionsTable.loading = true
-        const params = LNbits.utils.prepareFilterQuery(
-          this.regionsTable,
-          props
-        )
+        const params = LNbits.utils.prepareFilterQuery(this.regionsTable, props)
         const {data} = await LNbits.api.request(
           'GET',
           `/shipping/api/v1/regions/paginated?${params}`,
@@ -213,7 +257,6 @@ window.PageShipping = {
         .confirmDialog('Are you sure you want to delete this Regions?')
         .onOk(async () => {
           try {
-            
             await LNbits.api.request(
               'DELETE',
               '/shipping/api/v1/regions/' + regionsId,
@@ -247,7 +290,6 @@ window.PageShipping = {
       this.methodsFormDialog.show = true
     },
     async saveMethod() {
-      
       try {
         const data = {extra: {}, ...this.methodsFormDialog.data}
         const method = data.id ? 'PUT' : 'POST'
@@ -266,13 +308,9 @@ window.PageShipping = {
     },
 
     async getMethods(props) {
-      
       try {
         this.methodsTable.loading = true
-        const params = LNbits.utils.prepareFilterQuery(
-          this.methodsTable,
-          props
-        )
+        const params = LNbits.utils.prepareFilterQuery(this.methodsTable, props)
         const {data} = await LNbits.api.request(
           'GET',
           `/shipping/api/v1/methods/paginated?${params}`,
@@ -291,7 +329,6 @@ window.PageShipping = {
         .confirmDialog('Are you sure you want to delete this Method?')
         .onOk(async () => {
           try {
-            
             await LNbits.api.request(
               'DELETE',
               '/shipping/api/v1/methods/' + methodId,
@@ -339,8 +376,5 @@ window.PageShipping = {
     await this.getSettings()
     this.getRegions()
     this.getMethods()
-
-    
-    
   }
 }

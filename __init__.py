@@ -9,9 +9,7 @@ from .tasks import wait_for_paid_invoices
 from .views import shipping_generic_router
 from .views_api import shipping_api_router
 
-shipping_ext: APIRouter = APIRouter(
-    prefix="/shipping", tags=["Shipping"]
-)
+shipping_ext: APIRouter = APIRouter(prefix="/shipping", tags=["Shipping"])
 shipping_ext.include_router(shipping_generic_router)
 shipping_ext.include_router(shipping_api_router)
 

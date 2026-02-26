@@ -32,20 +32,18 @@ from .models import (
     CalculatePriceResponse,
     CreateMethod,
     CreateRegions,
-    ExtensionSettings,  #  
+    ExtensionSettings,  #
     Method,
     MethodFilters,
     Regions,
     RegionsFilters,
 )
-
 from .services import (
     calculate_price_for_request,
     get_available_regions_with_methods,
-    get_settings,  #  
-    update_settings,  #  
+    get_settings,  #
+    update_settings,  #
 )
-
 
 regions_filters = parse_filters(RegionsFilters)
 method_filters = parse_filters(MethodFilters)
@@ -124,8 +122,6 @@ async def api_get_regions(
         raise HTTPException(HTTPStatus.NOT_FOUND, "Regions not found.")
 
     return regions
-
-
 
 
 @shipping_api_router.delete(
@@ -259,12 +255,8 @@ async def api_delete_method(
 async def api_get_available_regions(
     account_id: AccountId = Depends(check_account_id_exists),
 ) -> AvailableRegionsResponse:
-    available_regions, methods, regions = await get_available_regions_with_methods(
-        account_id.id
-    )
-    return AvailableRegionsResponse(
-        available_regions=available_regions, methods=methods, regions=regions
-    )
+    available_regions, methods, regions = await get_available_regions_with_methods(account_id.id)
+    return AvailableRegionsResponse(available_regions=available_regions, methods=methods, regions=regions)
 
 
 @shipping_api_router.post(

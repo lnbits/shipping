@@ -25,7 +25,6 @@ class CreateRegions(BaseModel):
     price: float
     weight_threshold: int | None
     price_per_g: float | None
-    
 
 
 class Regions(BaseModel):
@@ -36,16 +35,18 @@ class Regions(BaseModel):
     price: float
     weight_threshold: int | None
     price_per_g: float | None
-    
+
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
-
-
 class RegionsFilters(FilterModel):
     __search_fields__ = [
-        "name","regions","price","weight_threshold","price_per_g",
+        "name",
+        "regions",
+        "price",
+        "weight_threshold",
+        "price_per_g",
     ]
 
     __sort_fields__ = [
@@ -54,7 +55,6 @@ class RegionsFilters(FilterModel):
         "price",
         "weight_threshold",
         "price_per_g",
-        
         "created_at",
         "updated_at",
     ]

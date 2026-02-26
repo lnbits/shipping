@@ -2,7 +2,7 @@
 
 
 from fastapi import APIRouter, Depends
-from lnbits.core.views.generic import index, index_public
+from lnbits.core.views.generic import index
 from lnbits.decorators import check_account_exists
 from lnbits.helpers import template_renderer
 
@@ -25,5 +25,3 @@ shipping_generic_router.add_api_route(
 
 
 # Frontend shareable page
-
-

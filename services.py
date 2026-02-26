@@ -1,21 +1,18 @@
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 
 from lnbits.core.models import Payment
 from loguru import logger
 
 from .crud import (
-    create_extension_settings,  #  
-    get_extension_settings,  #  
+    create_extension_settings,  #
+    get_extension_settings,  #
     get_method_by_id,
     get_method_by_title,
     get_methods_by_user,
-    get_regions,
     get_regions_by_user,
-    update_extension_settings,  #  
+    update_extension_settings,  #
 )
-from .models import ExtensionSettings  #  
-
-
+from .models import ExtensionSettings, Method, Regions  #
 
 
 async def payment_received_for_ignore(payment: Payment) -> bool:
@@ -50,6 +47,46 @@ async def get_available_regions_with_methods(user_id: str) -> tuple[list[str], l
     return settings.available_regions, methods, regions
 
 
+def _round_price(value: float, currency: str) -> float:
+    quant = Decimal("1") if currency in {"sat", "yen", "jpy"} else Decimal("0.01")
+    return float(Decimal(str(value)).quantize(quant, rounding=ROUND_HALF_UP))
+
+
+def _get_priced_region(region: str, regions_list: list[Regions]) -> Regions:
+    matching = [item for item in regions_list if region in item.regions]
+    if not matching:
+        raise ValueError("Region not found for any pricing rule.")
+    return sorted(matching, key=lambda item: item.price)[0]
+
+
+def _compute_base_price(region_record: Regions, weight: int) -> float:
+    base_price = float(region_record.price)
+    if region_record.weight_threshold is None or region_record.price_per_g is None:
+        return base_price
+    if weight <= region_record.weight_threshold:
+        return base_price
+    return base_price + (weight - region_record.weight_threshold) * float(region_record.price_per_g)
+
+
+async def _get_method_for_request(
+    user_id: str,
+    region: str,
+    method: str | None,
+) -> Method | None:
+    if not method:
+        return None
+    method_obj = await get_method_by_id(method)
+    if not method_obj:
+        method_obj = await get_method_by_title(user_id, method)
+    if not method_obj:
+        raise ValueError("Method not found.")
+    if method_obj.user_id != user_id:
+        raise ValueError("Method not found.")
+    if method_obj.regions and region not in method_obj.regions:
+        raise ValueError("Method not available for this region.")
+    return method_obj
+
+
 async def calculate_price_for_request(
     user_id: str,
     region: str,
@@ -62,39 +99,14 @@ async def calculate_price_for_request(
     if region not in settings.available_regions:
         raise ValueError("Region is not available.")
     regions_list = await get_regions_by_user(user_id=user_id)
-    matching = [item for item in regions_list if region in (item.regions or [])]
-    if not matching:
-        raise ValueError("Region not found for any pricing rule.")
-    region_record = sorted(matching, key=lambda item: item.price)[0]
-    base_price = float(region_record.price)
-    if (
-        region_record.weight_threshold is not None
-        and region_record.price_per_g is not None
-    ):
-        if weight > region_record.weight_threshold:
-            base_price += (weight - region_record.weight_threshold) * float(
-                region_record.price_per_g
-            )
+    region_record = _get_priced_region(region, regions_list)
+    base_price = _compute_base_price(region_record, weight)
 
-    method_obj = None
-    if method:
-        method_obj = await get_method_by_id(method)
-        if not method_obj:
-            method_obj = await get_method_by_title(user_id, method)
-        if not method_obj:
-            raise ValueError("Method not found.")
-        if method_obj.user_id != user_id:
-            raise ValueError("Method not found.")
-        if method_obj.regions and region not in method_obj.regions:
-            raise ValueError("Method not available for this region.")
+    method_obj = await _get_method_for_request(user_id, region, method)
 
     cost_percentage = method_obj.cost_percentage if method_obj else 0
     method_fee = base_price * (cost_percentage / 100)
     final_price = base_price + method_fee
-
-    def _round_price(value: float, currency: str) -> float:
-        quant = Decimal("1") if currency in {"sat", "yen", "jpy"} else Decimal("0.01")
-        return float(Decimal(str(value)).quantize(quant, rounding=ROUND_HALF_UP))
 
     rounded_base = _round_price(base_price, settings.currency)
     rounded_fee = _round_price(method_fee, settings.currency)
