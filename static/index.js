@@ -352,7 +352,21 @@ window.PageShipping = {
       if (!Array.isArray(regionLabels)) {
         return ''
       }
-      return regionLabels.join(', ')
+      const regionMap = new Map(this.regionsList.map(region => [region.id, region]))
+      return regionLabels
+        .map(regionId => regionMap.get(regionId)?.name || regionId)
+        .join(', ')
+    },
+    methodRegionOptions() {
+      return this.regionsList.map(region => {
+        const regionLabels = Array.isArray(region.regions)
+          ? region.regions.join(', ')
+          : ''
+        return {
+          label: regionLabels ? `${region.name} — ${regionLabels}` : region.name,
+          value: region.id
+        }
+      })
     },
 
     //////////////// Utils ////////////////////////
@@ -374,7 +388,7 @@ window.PageShipping = {
   async created() {
     this.fetchCurrencies()
     await this.getSettings()
-    this.getRegions()
+    await this.getRegions()
     this.getMethods()
   }
 }

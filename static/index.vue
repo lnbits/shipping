@@ -426,12 +426,9 @@
           v-model="methodsFormDialog.data.regions"
           label="Regions"
           hint="Select regions"
-          :options="
-            settingsFormDialog.data.available_regions &&
-            settingsFormDialog.data.available_regions.length
-              ? settingsFormDialog.data.available_regions
-              : defaultRegions
-          "
+          :options="methodRegionOptions()"
+          emit-value
+          map-options
         ></q-select>
 
         <div class="row q-mt-lg">

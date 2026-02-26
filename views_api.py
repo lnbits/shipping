@@ -153,8 +153,9 @@ async def api_create_method(
     data: CreateMethod,
     account_id: AccountId = Depends(check_account_id_exists),
 ) -> Method:
-    settings = await get_settings(account_id.id)
-    invalid = [region for region in data.regions if region not in settings.available_regions]
+    regions_list = await get_regions_by_user(account_id.id)
+    valid_region_ids = {region.id for region in regions_list}
+    invalid = [region_id for region_id in data.regions if region_id not in valid_region_ids]
     if invalid:
         raise HTTPException(HTTPStatus.BAD_REQUEST, "Invalid region.")
     return await create_method(account_id.id, data)
@@ -177,8 +178,9 @@ async def api_update_method(
         raise HTTPException(HTTPStatus.NOT_FOUND, "Method not found.")
     if method.user_id != account_id.id:
         raise HTTPException(HTTPStatus.FORBIDDEN, "You do not own this method.")
-    settings = await get_settings(account_id.id)
-    invalid = [region for region in data.regions if region not in settings.available_regions]
+    regions_list = await get_regions_by_user(account_id.id)
+    valid_region_ids = {region.id for region in regions_list}
+    invalid = [region_id for region_id in data.regions if region_id not in valid_region_ids]
     if invalid:
         raise HTTPException(HTTPStatus.BAD_REQUEST, "Invalid region.")
 

@@ -70,7 +70,7 @@ def _compute_base_price(region_record: Regions, weight: int) -> float:
 
 async def _get_method_for_request(
     user_id: str,
-    region: str,
+    region_id: str,
     method: str | None,
 ) -> Method | None:
     if not method:
@@ -82,7 +82,7 @@ async def _get_method_for_request(
         raise ValueError("Method not found.")
     if method_obj.user_id != user_id:
         raise ValueError("Method not found.")
-    if method_obj.regions and region not in method_obj.regions:
+    if method_obj.regions and region_id not in method_obj.regions:
         raise ValueError("Method not available for this region.")
     return method_obj
 
@@ -102,7 +102,7 @@ async def calculate_price_for_request(
     region_record = _get_priced_region(region, regions_list)
     base_price = _compute_base_price(region_record, weight)
 
-    method_obj = await _get_method_for_request(user_id, region, method)
+    method_obj = await _get_method_for_request(user_id, region_record.id, method)
 
     cost_percentage = method_obj.cost_percentage if method_obj else 0
     method_fee = base_price * (cost_percentage / 100)
