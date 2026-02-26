@@ -1,6 +1,6 @@
 {
   "name": "Shipping",
-  "short_description": "Add shipping to webshop and other extensions",
+  "short_description": "Shared shipping extension.",
   "tile": "/shipping/static/image/shipping.png",
   "version": "0.1.0",
   "min_lnbits_version": "1.4.2",
