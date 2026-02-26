@@ -1,0 +1,14 @@
+[
+  {
+    "path": "/shipping/",
+    "name": "PageShipping",
+    "template": "/shipping/static/index.vue",
+    "component": "/shipping/static/index.js"
+  },
+  {
+    "path": "/shipping/:id",
+    "name": "PageShippingPublic",
+    "template": "/shipping/static/public_page.vue",
+    "component": "/shipping/static/public_page.js"
+  }
+]
