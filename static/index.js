@@ -352,7 +352,9 @@ window.PageShipping = {
       if (!Array.isArray(regionLabels)) {
         return ''
       }
-      const regionMap = new Map(this.regionsList.map(region => [region.id, region]))
+      const regionMap = new Map(
+        this.regionsList.map(region => [region.id, region])
+      )
       return regionLabels
         .map(regionId => regionMap.get(regionId)?.name || regionId)
         .join(', ')
@@ -363,7 +365,9 @@ window.PageShipping = {
           ? region.regions.join(', ')
           : ''
         return {
-          label: regionLabels ? `${region.name} — ${regionLabels}` : region.name,
+          label: regionLabels
+            ? `${region.name} — ${regionLabels}`
+            : region.name,
           value: region.id
         }
       })
