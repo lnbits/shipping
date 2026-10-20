@@ -1,3 +1,4 @@
+from typing import cast
 from uuid import uuid4
 
 import pytest
@@ -32,7 +33,7 @@ async def test_create_and_get_regions():
     assert regions_one.id is not None
     assert regions_one.user_id == user_id
 
-    regions_one = await get_regions(user_id, regions_one.id)
+    regions_one = cast(Regions, await get_regions(user_id, regions_one.id))
     assert regions_one.id is not None
     assert regions_one.user_id == user_id
     assert regions_one.name == data.name
@@ -83,7 +84,7 @@ async def test_update_regions():
     assert regions_one.id is not None
     assert regions_one.user_id == user_id
 
-    regions_one = await get_regions(user_id, regions_one.id)
+    regions_one = cast(Regions, await get_regions(user_id, regions_one.id))
     assert regions_one.id is not None
     assert regions_one.user_id == user_id
     assert regions_one.name == data.name
@@ -102,7 +103,7 @@ async def test_update_regions():
     regions_updated = Regions(**{**regions_one.dict(), **data_updated.dict()})
 
     await update_regions(regions_updated)
-    regions_one = await get_regions_by_id(regions_one.id)
+    regions_one = cast(Regions, await get_regions_by_id(regions_one.id))
     assert regions_one.name == regions_updated.name
     assert regions_one.regions == regions_updated.regions
     assert regions_one.price == regions_updated.price

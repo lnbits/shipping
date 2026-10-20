@@ -82,7 +82,7 @@ async def api_update_regions(
             continue
         if set(row.regions) & set(data.regions):
             raise HTTPException(HTTPStatus.BAD_REQUEST, "Region already assigned.")
-    regions = await update_regions(Regions(**{**regions.dict(), **data.dict()}))
+    regions = await update_regions(Regions(**{**regions.model_dump(), **data.model_dump()}))
     return regions
 
 
@@ -184,7 +184,7 @@ async def api_update_method(
     if invalid:
         raise HTTPException(HTTPStatus.BAD_REQUEST, "Invalid region.")
 
-    method = await update_method(Method(**{**method.dict(), **data.dict()}))
+    method = await update_method(Method(**{**method.model_dump(), **data.model_dump()}))
     return method
 
 

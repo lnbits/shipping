@@ -20,7 +20,7 @@ db = Database("ext_shipping")
 
 ########################### Regions ############################
 async def create_regions(user_id: str, data: CreateRegions) -> Regions:
-    regions = Regions(**data.dict(), id=urlsafe_short_hash(), user_id=user_id)
+    regions = Regions(**data.model_dump(), id=urlsafe_short_hash(), user_id=user_id)
     await db.insert("shipping.regions", regions)
     return regions
 
@@ -115,7 +115,7 @@ async def delete_regions(user_id: str, regions_id: str) -> None:
 
 
 async def create_method(user_id: str, data: CreateMethod) -> Method:
-    method = Method(**data.dict(), id=urlsafe_short_hash(), user_id=user_id)
+    method = Method(**data.model_dump(), id=urlsafe_short_hash(), user_id=user_id)
     await db.insert("shipping.methods", method)
     return method
 
@@ -196,7 +196,7 @@ async def delete_method(user_id: str, method_id: str) -> None:
 
 ############################ Settings #############################
 async def create_extension_settings(user_id: str, data: ExtensionSettings) -> ExtensionSettings:
-    settings = UserExtensionSettings(**data.dict(), id=user_id)
+    settings = UserExtensionSettings(**data.model_dump(), id=user_id)
     await db.insert("shipping.extension_settings", settings)
     return settings
 
@@ -215,6 +215,6 @@ async def get_extension_settings(
 
 
 async def update_extension_settings(user_id: str, data: ExtensionSettings) -> ExtensionSettings:
-    settings = UserExtensionSettings(**data.dict(), id=user_id)
+    settings = UserExtensionSettings(**data.model_dump(), id=user_id)
     await db.update("shipping.extension_settings", settings)
     return settings
