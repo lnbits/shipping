@@ -23,8 +23,8 @@ class CreateRegions(BaseModel):
     name: str
     regions: list[str]
     price: float
-    weight_threshold: int | None
-    price_per_g: float | None
+    weight_threshold: int | None = None
+    price_per_g: float | None = None
 
 
 class Regions(BaseModel):
@@ -33,8 +33,8 @@ class Regions(BaseModel):
     name: str
     regions: list[str]
     price: float
-    weight_threshold: int | None
-    price_per_g: float | None
+    weight_threshold: int | None = None
+    price_per_g: float | None = None
 
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -59,8 +59,8 @@ class RegionsFilters(FilterModel):
         "updated_at",
     ]
 
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
 
 ################################# Methods ###########################
@@ -95,8 +95,8 @@ class MethodFilters(FilterModel):
         "updated_at",
     ]
 
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
 
 class AvailableRegionsResponse(BaseModel):
@@ -123,8 +123,8 @@ class CalculatePriceResponse(BaseModel):
     final_price: float
     currency: str
     fiat_price: float
-    method_id: str | None
-    method_title: str | None
+    method_id: str | None = None
+    method_title: str | None = None
 
 
 ############################ Settings #############################
