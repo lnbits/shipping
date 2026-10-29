@@ -2,8 +2,8 @@
   "name": "Shipping",
   "short_description": "Shared shipping extension",
   "tile": "/shipping/static/image/shipping.png",
-  "version": "0.1.0",
-  "min_lnbits_version": "1.7.0",
+  "version": "0.2.0",
+  "min_lnbits_version": "1.7.0-rc1",
   "contributors": [
     {
       "name": "LNbits community",
